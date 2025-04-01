@@ -1,0 +1,1001 @@
+/* Variables globales */
+:root {
+    --primary-color: #4f74e3; /* Bleu plus visible */
+    --secondary-color: #2e7d32; /* Vert plus foncé pour meilleur contraste */
+    --accent-color: #ff9800; /* Orange plus visible */
+    --third-color: #ffd166; /* Jaune kawaii */
+    --fourth-color: #a5d8ff; /* Bleu kawaii */
+    --text-color: #222222; /* Texte encore plus foncé pour une meilleure lisibilité */
+    --light-text: #333333; /* Texte secondaire plus foncé */
+    --bg-color: #f9fbf7; /* Fond légèrement teinté vert pâle */
+    --light-bg: #f2f9ee; /* Fond secondaire vert très pâle */
+    --dark-bg: #364e96; /* Fond sombre bleu-violet */
+    --header-height: 60px;
+    --hero-height: 80vh;
+    --footer-bg: #364e96;
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --border-radius: 20px; /* Bords très arrondis style kawaii */
+    --transition: all 0.3s ease;
+    --pastel-yellow: #fffacd; /* Jaune pastel */
+    --pastel-orange: #ffe5b4; /* Orange pastel */
+    --danger-color: #f44336;
+    --card-bg: rgba(255, 255, 255, 0.95);
+}
+
+/* Reset et base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.5;
+    color: #222222; /* Texte plus foncé */
+    background-color: white !important;
+    font-size: 0.95rem;
+    overflow-x: hidden;
+    z-index: 1;
+    position: relative;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+section {
+    padding: 50px 0;
+    position: relative;
+    z-index: 2;
+    background-color: white !important;
+}
+
+h1, h2, h3 {
+    position: relative;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: #222222; /* Couleur plus foncée pour les titres */
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 3px rgba(255,255,255,0.9); /* Ombre plus forte pour améliorer la lisibilité */
+    z-index: 5; /* S'assurer que les titres sont au premier plan */
+}
+
+h1::before {
+    content: '🌱';
+    position: absolute;
+    font-size: 1.5rem;
+    top: 0;
+    left: -30px;
+    opacity: 0.9;
+    animation: wiggle 3s ease-in-out infinite;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    z-index: 5;
+}
+
+h2::before {
+    content: '🌿';
+    position: absolute;
+    font-size: 1.3rem;
+    top: 0;
+    left: -25px;
+    opacity: 0.9;
+    animation: wiggle 3s ease-in-out infinite;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    z-index: 5;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+h1::after, h2::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    bottom: -10px;
+    left: 0;
+    background: linear-gradient(90deg, var(--accent-color), transparent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    animation: titleUnderline 1.5s forwards;
+}
+
+@keyframes titleUnderline {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+h1 {
+    font-size: 2.2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+p, li, .nav-links a, .footer-section a {
+    text-shadow: 0 1px 2px rgba(255,255,255,0.7);
+    position: relative;
+    z-index: 5;
+    color: #222222; /* Texte plus foncé pour tous les paragraphes */
+    font-weight: 500; /* Police plus épaisse pour meilleure lisibilité */
+}
+
+/* Header et Navigation */
+header {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: var(--header-height);
+    border-bottom: 3px solid var(--secondary-color);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.3rem;
+    transition: all 0.4s ease;
+}
+
+.logo i {
+    font-size: 2rem;
+    margin-right: 10px;
+    color: var(--primary-color);
+    transition: all 0.4s ease;
+    animation: wiggle 3s ease-in-out infinite;
+}
+
+.logo:hover i {
+    transform: rotate(15deg) scale(1.2);
+    color: var(--accent-color);
+    animation: none;
+}
+
+.logo:hover {
+    letter-spacing: 1px;
+}
+
+.mobile-nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.mobile-nav-toggle .fa-times {
+    display: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+nav {
+    display: flex;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    color: #222222; /* Liens de navigation plus foncés */
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+    z-index: 10;
+}
+
+.nav-links a i {
+    font-size: 1rem;
+}
+
+.nav-links a:hover, .nav-links .active a {
+    color: var(--primary-color);
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.login-btn {
+    background-color: var(--primary-color);
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.login-btn:hover {
+    background-color: var(--secondary-color) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* Style du dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px 0;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-content a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    gap: 10px;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--primary-color);
+    padding-left: 25px;
+}
+
+.dropdown .fa-chevron-down {
+    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+.dropdown:hover .fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+/* Responsive navigation */
+@media (max-width: 992px) {
+    .mobile-nav-toggle {
+        display: block;
+        z-index: 2000;
+        position: relative;
+    }
+    
+    nav {
+        position: fixed;
+        inset: 0 0 0 0; /* Plein écran sur mobile */
+        background: white;
+        padding: min(20vh, 8rem) 1.5rem;
+        transform: translateX(100%);
+        transition: transform 350ms ease-out;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
+    
+    nav[data-visible="true"] {
+        transform: translateX(0%);
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-links a {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .mobile-nav-toggle[aria-expanded="true"] .fa-bars {
+        display: none;
+    }
+    
+    .mobile-nav-toggle[aria-expanded="true"] .fa-times {
+        display: block;
+    }
+    
+    .dropdown-content {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        min-width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    
+    .dropdown:hover .dropdown-content,
+    .dropdown-content.show {
+        max-height: 300px;
+    }
+    
+    .dropdown-content a {
+        padding: 12px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    nav {
+        inset: 0 0 0 0;
+        padding-top: 8rem;
+    }
+    
+    .logo span {
+        display: none;
+    }
+}
+
+/* Fin des styles du header et navigation */
+
+/* Amélioration des sections hero */
+.hero, .subject-hero {
+    position: relative;
+    padding: 90px 0 60px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://img.freepik.com/free-photo/close-up-scientist-holding-test-tube-laboratory_23-2148866915.jpg') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: inset 0 -10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.subject-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://img.freepik.com/free-photo/students-knowing-right-answer_329181-14271.jpg') no-repeat center center/cover;
+}
+
+.hero::before, .subject-hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.5));
+    z-index: 1;
+}
+
+.hero h1, .subject-hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    animation: fadeInDown 1.2s ease;
+}
+
+.hero p, .subject-hero p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 25px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 1.2s ease;
+}
+
+.hero .btn, .subject-hero .btn {
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation de défilement en douceur pour les liens d'ancrage */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Animation pour les liens d'ancrage avec une transition personnalisée */
+a[href^="#"] {
+    transition: all 0.3s ease;
+}
+
+a[href^="#"]:hover {
+    color: var(--primary-color);
+}
+
+/* Ajout d'une animation de défilement personnalisée */
+.scroll-down-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    color: white;
+    font-size: 2rem;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    40% {
+        transform: translateY(-15px) translateX(-50%);
+    }
+    60% {
+        transform: translateY(-7px) translateX(-50%);
+    }
+}
+
+/* Amélioration responsive des sections hero */
+@media (max-width: 768px) {
+    .hero, .subject-hero {
+        padding: 80px 0 50px;
+    }
+    
+    .hero h1, .subject-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p, .subject-hero p {
+        font-size: 1rem;
+    }
+}
+
+/* Fin améliorations hero */
+
+/* Hero Section */
+.hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://img.freepik.com/free-photo/dna-structure-dark-background-science-concept-3d-rendering_73274-453.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-top: 60px;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.hero-content h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.7); /* Ombre plus forte pour le texte blanc sur fond sombre */
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    animation: fadeInUp 1.2s ease;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.7); /* Ombre plus forte pour le texte blanc sur fond sombre */
+}
+
+/* Buttons */
+.btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 0 rgba(84, 172, 86, 0.7);
+    transform-style: preserve-3d;
+    z-index: 1;
+}
+
+.btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 0 rgba(84, 172, 86, 0.5);
+}
+
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(84, 172, 86, 0.7);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: skewX(-20deg);
+    transition: all 0.6s ease;
+}
+
+.btn:hover::after {
+    left: 100%;
+}
+
+.btn-outline {
+    display: inline-block;
+    background-color: transparent;
+    color: var(--primary-color);
+    padding: 6px 16px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    border: 2px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    font-size: 0.9rem;
+}
+
+.btn-outline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--primary-color);
+    z-index: -1;
+    transition: width 0.3s ease;
+}
+
+.btn-outline:hover {
+    color: white;
+}
+
+.btn-outline:hover::before {
+    width: 100%;
+}
+
+/* About Section */
+.about-section {
+    background-color: var(--light-bg);
+    padding: 40px 0;
+}
+
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 25px;
+}
+
+.about-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-text p {
+    margin-bottom: 15px;
+}
+
+.about-image {
+    flex: 1;
+    min-width: 300px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    height: 240px;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.about-image:hover img {
+    transform: scale(1.05);
+}
+
+/* Features */
+.features-section {
+    background-color: white;
+    padding: 60px 0;
+    box-shadow: none;
+    border: none;
+}
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.feature-card {
+    background-color: white !important;
+    border: 2px solid rgba(79, 116, 227, 0.3) !important; /* Bordure plus visible */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08) !important;
+    padding: 25px;
+    color: #222222 !important;
+}
+
+.feature-card:hover {
+    box-shadow: 0 15px 30px rgba(79, 116, 227, 0.2) !important;
+    border-color: rgba(79, 116, 227, 0.5) !important;
+}
+
+.feature-icon {
+    display: inline-block;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.feature-icon i {
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+}
+
+.feature-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #222222 !important;
+    font-weight: 700 !important;
+    position: relative;
+    z-index: 2;
+}
+
+.feature-card p {
+    color: #333333 !important;
+    font-weight: 500 !important;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(139, 195, 74, 0.2) 0%, rgba(139, 195, 74, 0) 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    transform: scale(0.5);
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Animation d'entrée pour les cartes */
+.fade-in {
+    opacity: 1 !important; /* Assurer que tout est visible */
+    transform: translateY(0) !important;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Styles responsifs pour les cartes */
+@media (max-width: 992px) {
+    .feature-card {
+        flex: 0 0 calc(50% - 30px);
+    }
+}
+
+@media (max-width: 768px) {
+    .feature-card {
+        flex: 0 0 100%;
+    }
+}
+
+/* Levels */
+.levels {
+    background: white !important;
+    color: #222222 !important;
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.levels::before {
+    display: none !important;
+}
+
+.levels .container {
+    position: relative;
+    z-index: 1;
+}
+
+.level-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Plus d'espace entre les cartes */
+    margin-top: 40px;
+}
+
+.level-card {
+    background-color: white !important;
+    border: 2px solid rgba(79, 116, 227, 0.3) !important; /* Bordure plus visible */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important; /* Ombre légère */
+    transition: all 0.3s ease;
+    color: #222222 !important;
+}
+
+.level-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(79, 116, 227, 0.2) !important;
+    border-color: rgba(79, 116, 227, 0.5);
+}
+
+.level-card:hover::after {
+    opacity: 1;
+    transform: rotate(15deg) scale(1.2);
+}
+
+.level-card h3 {
+    font-size: 1.8rem; /* Réduire la taille de la police pour tenir sur une ligne */
+    white-space: nowrap; /* Empêcher les retours à la ligne dans le titre */
+    margin-bottom: 15px;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+    color: #222222 !important;
+}
+
+.level-card p {
+    color: #333333 !important;
+    font-weight: 500 !important;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding: 20px;
+}
+
+/* Amélioration des boutons d'onglets */
+.tab-btn {
+    background-color: white !important;
+    border: 2px solid rgba(79, 116, 227, 0.3) !important;
+    color: #222222 !important;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background-color: rgba(79, 116, 227, 0.1) !important;
+    transform: translateY(-3px);
+}
+
+.tab-btn.active {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Amélioration du contraste des titres */
+.section-title {
+    color: #222222 !important;
+    font-weight: 800;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: none !important;
+}
+
+/* Amélioration de la FAQ */
+.faq-item {
+    border: 2px solid rgba(79, 116, 227, 0.3) !important;
+    background-color: white !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05) !important;
+}
+
+.faq-question {
+    background-color: white !important;
+    border-bottom: 1px solid rgba(79, 116, 227, 0.1) !important;
+    color: #222222 !important;
+    font-weight: 600 !important;
+}
+
+.faq-answer {
+    color: #333333 !important;
+    font-weight: 500 !important;
+}
+
+.faq-item.active .faq-question {
+    background-color: rgba(79, 116, 227, 0.05) !important;
+    color: var(--primary-color) !important;
+}
+
+/* Boutons plus visibles */
+.btn, .btn-primary, .btn-secondary {
+    font-weight: 700 !important;
+    padding: 10px 25px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn:hover, .btn-primary:hover, .btn-secondary:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-outline {
+    border: 2px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    background-color: white !important;
+    font-weight: 700 !important;
+    padding: 8px 20px !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    box-shadow: 0 8px 15px rgba(79, 116, 227, 0.2) !important;
+}
+
+/* Suppression de tous les effets de fond */
+.feature-card::before,
+.theme-card::before,
+.level-card::before,
+body::before,
+.levels::before,
+section::before {
+    display: none !important;
+}
+
+/* Assurer un fond blanc partout */
+section, .features-section, .level-section, .faq-section, .cta-section {
+    background-color: white !important;
+}

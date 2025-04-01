@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Enseignant - Ressources SVT</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles spécifiques au tableau de bord */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #777;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .file-item i {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .file-item .file-size {
+            margin-left: auto;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .resource-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #777;
+            transition: var(--transition);
+        }
+        
+        .btn-icon:hover {
+            color: var(--primary-color);
+        }
+        
+        .btn-icon.delete:hover {
+            color: #f44336;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 30px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .class-selector {
+            margin-bottom: 20px;
+        }
+        
+        .class-selector select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+        
+        .student-list {
+            margin-top: 20px;
+        }
+        
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .student-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--primary-color);
+        }
+        
+        .class-code {
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .copy-btn {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>SVT Resources</h3>
+                <p>Tableau de bord Enseignant</p>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> Mes ressources</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Mes classes</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Paramètres</a></li>
+                    <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h2>Tableau de bord</h2>
+                <div>
+                    <span>Bienvenue, Professeur</span>
+                </div>
+            </div>
+            
+            <!-- Navigation par onglets -->
+            <div class="login-tabs">
+                <button class="tab-button active" data-tab="resources-tab">Mes ressources</button>
+                <button class="tab-button" data-tab="upload-tab">Ajouter des ressources</button>
+                <button class="tab-button" data-tab="classes-tab">Gérer mes classes</button>
+            </div>
+            
+            <!-- Onglet Ressources -->
+            <div id="resources-tab" class="tab-content active">
+                <div class="class-selector">
+                    <select id="resource-class-filter">
+                        <option value="all">Toutes les classes</option>
+                        <option value="6eme">6ème</option>
+                        <option value="5eme">5ème</option>
+                        <option value="4eme">4ème</option>
+                        <option value="3eme">3ème</option>
+                        <option value="2nde">2nde</option>
+                        <option value="1ere">1ère</option>
+                        <option value="terminale">Terminale</option>
+                    </select>
+                </div>
+                
+                <div class="resources-grid">
+                    <!-- Exemple de ressource 1 -->
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>Cours système nerveux</h3>
+                            <div class="resource-actions">
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="resource-card-body">
+                            <p>Type: PDF</p>
+                            <p>Classe: 3ème</p>
+                            <p>Date d'ajout: 15/09/2023</p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <span>Visibilité</span>
+                            <label class="switch">
+                                <input type="checkbox" class="visibility-switch" data-resource-id="1" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Exemple de ressource 2 -->
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>Exercice respiration</h3>
+                            <div class="resource-actions">
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="resource-card-body">
+                            <p>Type: PDF</p>
+                            <p>Classe: 5ème</p>
+                            <p>Date d'ajout: 10/09/2023</p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <span>Visibilité</span>
+                            <label class="switch">
+                                <input type="checkbox" class="visibility-switch" data-resource-id="2">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Exemple de ressource 3 -->
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>Schéma cellule végétale</h3>
+                            <div class="resource-actions">
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="resource-card-body">
+                            <p>Type: Image</p>
+                            <p>Classe: Terminale</p>
+                            <p>Date d'ajout: 05/09/2023</p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <span>Visibilité</span>
+                            <label class="switch">
+                                <input type="checkbox" class="visibility-switch" data-resource-id="3" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Onglet Ajouter des ressources -->
+            <div id="upload-tab" class="tab-content">
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label for="resource-title">Titre de la ressource</label>
+                        <input type="text" id="resource-title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resource-class">Classe</label>
+                        <select id="resource-class" name="class" required>
+                            <option value="">Sélectionner une classe</option>
+                            <option value="6eme">6ème</option>
+                            <option value="5eme">5ème</option>
+                            <option value="4eme">4ème</option>
+                            <option value="3eme">3ème</option>
+                            <option value="2nde">2nde</option>
+                            <option value="1ere">1ère</option>
+                            <option value="terminale">Terminale</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resource-description">Description (optionnelle)</label>
+                        <textarea id="resource-description" name="description" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Fichier</label>
+                        <div class="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Déposez vos fichiers ici ou</p>
+                            <div class="file-input-wrapper">
+                                <button class="btn">Parcourir</button>
+                                <input type="file" id="file-input" name="file" multiple>
+                            </div>
+                        </div>
+                        <div id="file-preview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-container">Rendre visible immédiatement
+                            <input type="checkbox" name="visible" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn">Ajouter la ressource</button>
+                </form>
+            </div>
+            
+            <!-- Onglet Gérer mes classes -->
+            <div id="classes-tab" class="tab-content">
+                <div class="dashboard-header">
+                    <h3>Mes classes</h3>
+                    <button class="btn" id="add-class-btn">Ajouter une classe</button>
+                </div>
+                
+                <div class="resources-grid">
+                    <!-- Classe 1 -->
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>3ème A</h3>
+                            <div class="resource-actions">
+                                <button class="btn-icon view-code" data-class-code="3A2023"><i class="fas fa-key"></i></button>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="resource-card-body">
+                            <p>Nombre d'élèves: 28</p>
+                            <p>Ressources: 12</p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <a href="#" class="view-students" data-class="3A">Voir les élèves</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Classe 2 -->
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>Terminale Spé SVT</h3>
+                            <div class="resource-actions">
+                                <button class="btn-icon view-code" data-class-code="TSVT2023"><i class="fas fa-key"></i></button>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="resource-card-body">
+                            <p>Nombre d'élèves: 15</p>
+                            <p>Ressources: 24</p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <a href="#" class="view-students" data-class="TSVT">Voir les élèves</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Liste des élèves (affichée après clic sur "Voir les élèves") -->
+                <div class="student-list" style="display: none;">
+                    <div class="dashboard-header">
+                        <h3>Élèves de <span class="class-name">3ème A</span></h3>
+                        <button class="btn" id="add-student-btn">Ajouter un élève</button>
+                    </div>
+                    
+                    <!-- Exemple d'élèves -->
+                    <div class="student-item">
+                        <div>
+                            <strong>Martin Dupont</strong>
+                            <span>Identifiant: martin.d</span>
+                        </div>
+                        <div class="student-actions">
+                            <button class="btn-icon"><i class="fas fa-key"></i></button>
+                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="student-item">
+                        <div>
+                            <strong>Lisa Martin</strong>
+                            <span>Identifiant: lisa.m</span>
+                        </div>
+                        <div class="student-actions">
+                            <button class="btn-icon"><i class="fas fa-key"></i></button>
+                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                            <button class="btn-icon delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="back-to-classes">Retour aux classes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal pour afficher le code de classe -->
+    <div class="modal" id="class-code-modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Code de classe</h3>
+            <p>Partagez ce code avec vos élèves pour qu'ils puissent rejoindre la classe :</p>
+            <div class="class-code" id="class-code-display">3A2023</div>
+            <button class="btn copy-btn" id="copy-class-code">Copier le code</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des modals
+            const modals = document.querySelectorAll('.modal');
+            const modalCloseBtns = document.querySelectorAll('.modal-close');
+            
+            // Ouvrir la modal de code de classe
+            document.querySelectorAll('.view-code').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const classCode = this.getAttribute('data-class-code');
+                    document.getElementById('class-code-display').textContent = classCode;
+                    document.getElementById('class-code-modal').classList.add('active');
+                });
+            });
+            
+            // Fermer les modals
+            modalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    modals.forEach(modal => modal.classList.remove('active'));
+                });
+            });
+            
+            // Copier le code de classe
+            document.getElementById('copy-class-code').addEventListener('click', function() {
+                const codeText = document.getElementById('class-code-display').textContent;
+                navigator.clipboard.writeText(codeText).then(() => {
+                    showNotification('Code copié!');
+                });
+            });
+            
+            // Afficher la liste des élèves
+            document.querySelectorAll('.view-students').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const className = this.getAttribute('data-class');
+                    document.querySelector('.class-name').textContent = 
+                        className === '3A' ? '3ème A' : 'Terminale Spé SVT';
+                    
+                    document.querySelector('.resources-grid').style.display = 'none';
+                    document.querySelector('.student-list').style.display = 'block';
+                });
+            });
+            
+            // Retour à la liste des classes
+            document.getElementById('back-to-classes').addEventListener('click', function() {
+                document.querySelector('.student-list').style.display = 'none';
+                document.querySelector('.resources-grid').style.display = 'grid';
+            });
+            
+            // Fonction pour afficher une notification
+            function showNotification(message) {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html> 

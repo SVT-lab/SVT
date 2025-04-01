@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ressources - SVT avec Mme Quintas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Animations et éléments kawaii spécifiques à la page */
+        .kawaii-bubble {
+            position: absolute;
+            font-size: 1.8rem;
+            animation: float-bubble 6s infinite ease-in-out;
+            z-index: 2;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
+            opacity: 0.9;
+        }
+        
+        @keyframes float-bubble {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(15px, -15px) rotate(5deg); }
+            50% { transform: translate(0, -25px) rotate(0deg); }
+            75% { transform: translate(-15px, -15px) rotate(-5deg); }
+        }
+        
+        .bubble-1 { top: 20%; left: 10%; animation-delay: 0s; }
+        .bubble-2 { top: 15%; left: 80%; animation-delay: 1s; }
+        .bubble-3 { top: 70%; left: 15%; animation-delay: 2s; }
+        .bubble-4 { top: 65%; left: 85%; animation-delay: 3s; }
+        
+        .rainbow-text {
+            background-image: linear-gradient(45deg, #78c27a, #b6e6a7, #ffadc5, #ffd166, #a5d8ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-animation 6s ease infinite;
+        }
+        
+        @keyframes rainbow-animation {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 1.5s ease infinite;
+            cursor: pointer;
+            z-index: 5;
+        }
+        
+        @keyframes bounce {
+            from { transform: translate(-50%, 0); }
+            to { transform: translate(-50%, -10px); }
+        }
+        
+        .decoration {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.2;
+            pointer-events: none;
+            font-size: 5rem;
+        }
+        
+        .decoration-1 {
+            top: 10%;
+            right: 5%;
+            animation: float-bubble 8s infinite ease-in-out;
+        }
+        
+        .decoration-2 {
+            bottom: 15%;
+            left: 5%;
+            animation: float-bubble 8s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+        
+        .resource-card {
+            background-color: white !important;
+            border: 2px solid rgba(79, 116, 227, 0.3) !important;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08) !important;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .resource-card h3 {
+            color: #222222 !important;
+            font-weight: 700 !important;
+        }
+        
+        .resource-card p {
+            color: #333333 !important;
+            font-weight: 500 !important;
+            line-height: 1.6;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(79, 116, 227, 0.2) !important;
+            border-color: rgba(79, 116, 227, 0.5) !important;
+        }
+        
+        .resource-card::before {
+            display: none !important;
+        }
+        
+        .filter-btn {
+            background-color: white !important;
+            border: 2px solid rgba(79, 116, 227, 0.3) !important;
+            color: #222222 !important;
+            font-weight: 600;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+            margin: 0 5px 10px 0;
+            border-radius: 20px;
+        }
+        
+        .filter-btn:hover {
+            background-color: rgba(79, 116, 227, 0.1) !important;
+            transform: translateY(-3px);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border-color: var(--primary-color) !important;
+        }
+        
+        .resources-section, .search-section {
+            background-color: white !important;
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            color: #222222 !important;
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: none !important;
+        }
+        
+        .section-desc {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #333333 !important;
+            font-weight: 500 !important;
+        }
+        
+        .search-container {
+            margin-bottom: 30px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid rgba(79, 116, 227, 0.3);
+            border-radius: 30px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 15px rgba(79, 116, 227, 0.15);
+            outline: none;
+        }
+        
+        .resource-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: rgba(79, 116, 227, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .subject-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://img.freepik.com/free-photo/student-success-education-knowledge-concept_53876-139928.jpg') no-repeat center center/cover !important;
+        }
+        
+        .subject-hero h1 {
+            color: white !important;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+        }
+    </style>
+</head>
+<body class="page-transition">
+    <!-- Header avec navigation responsive moderne -->
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <a href="index.html" class="logo fade-in">
+                    <i class="fas fa-leaf"></i>
+                    <span>SVT avec Mme Quintas</span>
+                </a>
+            </div>
+            
+            <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
+                <span class="sr-only">Menu</span>
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <nav data-visible="false">
+                <ul id="primary-navigation" class="nav-links fade-in">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropbtn"><i class="fas fa-graduation-cap"></i> Niveaux <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="college.html"><i class="fas fa-school"></i> Collège</a>
+                            <a href="lycee.html"><i class="fas fa-university"></i> Lycée</a>
+                        </div>
+                    </li>
+                    <li class="active"><a href="ressources.html"><i class="fas fa-book"></i> Ressources</a></li>
+                    <li><a href="#about"><i class="fas fa-info-circle"></i> À propos</a></li>
+                    <li><a href="login.html" class="btn login-btn"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero section avec titre et image de fond -->
+    <section class="hero resources-hero">
+        <div class="kawaii-bubble bubble-1">📚</div>
+        <div class="kawaii-bubble bubble-2">🔬</div>
+        <div class="kawaii-bubble bubble-3">🧪</div>
+        <div class="kawaii-bubble bubble-4">📊</div>
+        <div class="decoration decoration-1">🧫</div>
+        <div class="decoration decoration-2">🌱</div>
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>Explorer nos <span class="rainbow-text">ressources</span> pédagogiques</h1>
+                <p class="fade-in">Une collection de supports variés pour approfondir tes connaissances en SVT, réviser efficacement et t'entraîner.</p>
+                <a href="#resources-list" class="btn cta-btn fade-in">Découvrir les ressources <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Section filtres et recherche -->
+    <section class="section filters-section">
+        <div class="container">
+            <h2 class="section-title fade-in">Trouve les <span class="rainbow-text">ressources</span> qui te correspondent</h2>
+            <p class="section-desc fade-in">Filtre par niveau, type de contenu ou thématique pour accéder rapidement aux ressources dont tu as besoin.</p>
+            
+            <div class="filters-container fade-in">
+                <div class="search-container">
+                    <input type="text" id="resources-search" placeholder="Rechercher une ressource..." class="search-input">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="filter-buttons">
+                    <button class="filter-button active" data-filter="all">Tous</button>
+                    <button class="filter-button" data-filter="college">Collège</button>
+                    <button class="filter-button" data-filter="lycee">Lycée</button>
+                    <button class="filter-button" data-filter="cours">Cours</button>
+                    <button class="filter-button" data-filter="exercices">Exercices</button>
+                    <button class="filter-button" data-filter="videos">Vidéos</button>
+                    <button class="filter-button" data-filter="fiches">Fiches de révision</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section listing des ressources -->
+    <section id="resources-list" class="section resources-list">
+        <div class="container">
+            <div class="resources-grid">
+                <!-- Ressource 1 -->
+                <div class="resource-card fade-in" data-category="college cours">
+                    <div class="resource-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>La cellule : unité du vivant</h3>
+                    <p class="resource-desc">Découverte de la structure cellulaire et des différences entre cellules animales et végétales.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-school"></i> 6ème</span>
+                        <span class="resource-type"><i class="fas fa-file-alt"></i> Cours</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Consulter <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <!-- Ressource 2 -->
+                <div class="resource-card fade-in" data-category="college exercices">
+                    <div class="resource-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Exercices sur la respiration</h3>
+                    <p class="resource-desc">Série d'exercices pour comprendre les mécanismes respiratoires et les échanges gazeux.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-school"></i> 5ème</span>
+                        <span class="resource-type"><i class="fas fa-pen"></i> Exercices</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Consulter <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <!-- Ressource 3 -->
+                <div class="resource-card fade-in" data-category="college videos">
+                    <div class="resource-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>La reproduction sexuée</h3>
+                    <p class="resource-desc">Vidéo explicative sur les mécanismes de reproduction sexuée chez les animaux et les plantes.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-school"></i> 4ème</span>
+                        <span class="resource-type"><i class="fas fa-video"></i> Vidéo</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Visionner <i class="fas fa-play"></i></a>
+                </div>
+                
+                <!-- Ressource 4 -->
+                <div class="resource-card fade-in" data-category="college fiches">
+                    <div class="resource-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Évolution et diversité humaine</h3>
+                    <p class="resource-desc">Fiche de révision synthétique sur l'évolution humaine et la diversité génétique.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-school"></i> 3ème</span>
+                        <span class="resource-type"><i class="fas fa-file-pdf"></i> Fiche</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Télécharger <i class="fas fa-download"></i></a>
+                </div>
+                
+                <!-- Ressource 5 -->
+                <div class="resource-card fade-in" data-category="lycee cours">
+                    <div class="resource-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>La Terre dans l'Univers</h3>
+                    <p class="resource-desc">Cours détaillé sur la formation et la structure de la Terre dans le système solaire.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-university"></i> 2nde</span>
+                        <span class="resource-type"><i class="fas fa-file-alt"></i> Cours</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Consulter <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <!-- Ressource 6 -->
+                <div class="resource-card fade-in" data-category="lycee exercices">
+                    <div class="resource-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Exercices sur la génétique</h3>
+                    <p class="resource-desc">Série d'exercices pour comprendre et appliquer les principes de la génétique mendélienne.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-university"></i> 1ère</span>
+                        <span class="resource-type"><i class="fas fa-pen"></i> Exercices</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Consulter <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <!-- Ressource 7 -->
+                <div class="resource-card fade-in" data-category="lycee videos">
+                    <div class="resource-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>L'immunité adaptative</h3>
+                    <p class="resource-desc">Vidéo explicative sur les mécanismes de l'immunité adaptative et la réponse immunitaire.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-university"></i> Terminale</span>
+                        <span class="resource-type"><i class="fas fa-video"></i> Vidéo</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Visionner <i class="fas fa-play"></i></a>
+                </div>
+                
+                <!-- Ressource 8 -->
+                <div class="resource-card fade-in" data-category="lycee fiches">
+                    <div class="resource-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Révisions BAC : Génétique et évolution</h3>
+                    <p class="resource-desc">Fiche de révision complète sur la génétique et l'évolution pour l'épreuve du baccalauréat.</p>
+                    <div class="resource-meta">
+                        <span class="resource-level"><i class="fas fa-university"></i> Terminale</span>
+                        <span class="resource-type"><i class="fas fa-file-pdf"></i> Fiche</span>
+                    </div>
+                    <a href="#" class="btn resource-btn">Télécharger <i class="fas fa-download"></i></a>
+                </div>
+            </div>
+            
+            <div class="pagination fade-in">
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <span class="pagination-dots">...</span>
+                <button class="pagination-btn">10</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section d'aide à la révision -->
+    <section class="section revision-tips">
+        <div class="container">
+            <h2 class="section-title fade-in">Conseils pour bien <span class="rainbow-text">réviser</span></h2>
+            <p class="section-desc fade-in">Quelques astuces pour optimiser ton apprentissage et tes révisions en SVT.</p>
+            
+            <div class="tips-grid fade-in">
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Planifie tes révisions</h3>
+                    <p>Établis un planning de révision régulier plutôt que de tout réviser la veille des examens. La répétition est la clé de la mémorisation!</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-pencil-alt"></i>
+                    </div>
+                    <h3>Fais des schémas</h3>
+                    <p>En SVT, les schémas sont essentiels pour comprendre les concepts. Entraîne-toi à reproduire les schémas clés sans modèle.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Travaille en groupe</h3>
+                    <p>Organise des sessions d'étude avec tes camarades pour échanger vos connaissances et expliquer les concepts aux autres.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Teste tes connaissances</h3>
+                    <p>Utilise nos quiz interactifs pour vérifier ta compréhension et identifier les points à retravailler.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section CTA -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-content fade-in">
+                <h2>Tu ne trouves pas ce que tu cherches?</h2>
+                <p>Connecte-toi pour accéder à toutes nos ressources et utiliser notre moteur de recherche avancé!</p>
+                <a href="login.html" class="btn cta-btn">Se connecter <i class="fas fa-sign-in-alt"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="about">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SVT avec Mme Quintas</h3>
+                    <p>Une plateforme pédagogique pour l'apprentissage des Sciences de la Vie et de la Terre, du collège au lycée.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="college.html">Collège</a></li>
+                        <li><a href="lycee.html">Lycée</a></li>
+                        <li><a href="ressources.html">Ressources</a></li>
+                        <li><a href="login.html">Connexion</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> mme.quintas@college-lycee.fr</p>
+                    <p><i class="fas fa-school"></i> Académie de Versailles</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 SVT avec Mme Quintas. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables pour la navigation mobile
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            const primaryNavigation = document.getElementById('primary-navigation');
+            
+            // Gestion du menu mobile
+            if (mobileNavToggle) {
+                mobileNavToggle.addEventListener('click', () => {
+                    const visibility = primaryNavigation.getAttribute('data-visible');
+                    
+                    if (visibility === 'false') {
+                        primaryNavigation.setAttribute('data-visible', 'true');
+                        mobileNavToggle.setAttribute('aria-expanded', 'true');
+                        document.body.style.overflow = 'hidden'; // Empêche le défilement quand le menu est ouvert
+                    } else {
+                        primaryNavigation.setAttribute('data-visible', 'false');
+                        mobileNavToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = ''; // Restaure le défilement
+                    }
+                });
+            }
+            
+            // Fermer le menu quand on clique sur un lien
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (primaryNavigation && primaryNavigation.getAttribute('data-visible') === 'true') {
+                        primaryNavigation.setAttribute('data-visible', 'false');
+                        mobileNavToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // Filtrage des ressources
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const resourceCards = document.querySelectorAll('.resource-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    const filter = button.getAttribute('data-filter');
+                    
+                    resourceCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category').includes(filter)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Recherche de ressources
+            const searchInput = document.getElementById('resources-search');
+            
+            if (searchInput) {
+                searchInput.addEventListener('keyup', () => {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    
+                    resourceCards.forEach(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const description = card.querySelector('.resource-desc').textContent.toLowerCase();
+                        
+                        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // Animation d'entrée pour les bulles kawaii
+            setTimeout(() => {
+                document.querySelectorAll('.kawaii-bubble').forEach((bubble, index) => {
+                    bubble.style.transition = 'all 0.5s ease';
+                    bubble.style.opacity = '1';
+                    setTimeout(() => {
+                        bubble.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            bubble.style.transform = 'scale(1)';
+                        }, 300);
+                    }, index * 100);
+                });
+            }, 500);
+            
+            // Animation de défilement doux
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            const resourcesSection = document.querySelector('.filters-section');
+            
+            if (scrollIndicator && resourcesSection) {
+                scrollIndicator.addEventListener('click', () => {
+                    resourcesSection.scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

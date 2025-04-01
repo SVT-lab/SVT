@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Élève - Ressources SVT</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles spécifiques à l'espace élève */
+        .resource-preview {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 900px;
+            height: 90%;
+            max-height: 800px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .full-preview {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .search-bar {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+        
+        .search-bar button {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-group {
+            flex: 1;
+        }
+        
+        .filter-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+        
+        .btn-outline {
+            display: inline-block;
+            padding: 8px 15px;
+            background: none;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #777;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        .resource-description {
+            margin-top: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>SVT Resources</h3>
+                <p>Espace Élève</p>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> Ressources</a></li>
+                    <li><a href="#"><i class="fas fa-tasks"></i> Mes progrès</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Paramètres</a></li>
+                    <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h2>Bienvenue dans votre espace élève</h2>
+                <div>
+                    <span>3ème A - Martin Dupont</span>
+                </div>
+            </div>
+            
+            <!-- Navigation par onglets -->
+            <div class="login-tabs">
+                <button class="tab-button active" data-tab="resources-tab">Ressources</button>
+                <button class="tab-button" data-tab="progress-tab">Mes progrès</button>
+            </div>
+            
+            <!-- Onglet Ressources -->
+            <div id="resources-tab" class="tab-content active">
+                <div class="search-bar">
+                    <input type="text" placeholder="Rechercher une ressource...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <select id="type-filter">
+                            <option value="all">Tous les types</option>
+                            <option value="pdf">PDF</option>
+                            <option value="image">Images</option>
+                            <option value="video">Vidéos</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="date-filter">
+                            <option value="all">Toutes les dates</option>
+                            <option value="today">Aujourd'hui</option>
+                            <option value="week">Cette semaine</option>
+                            <option value="month">Ce mois-ci</option>
+                        </select>
+                    </div>
+                    <button class="btn-outline">Réinitialiser les filtres</button>
+                </div>
+                
+                <div class="resources-grid">
+                    <!-- Ressource 1 -->
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>Cours système nerveux</h3>
+                        </div>
+                        <div class="resource-card-body">
+                            <iframe class="resource-preview" src="https://via.placeholder.com/800x600.png?text=Aperçu+PDF" title="Aperçu cours"></iframe>
+                            <p class="resource-description">
+                                Ce cours couvre les bases du système nerveux humain, y compris la structure des neurones et le fonctionnement des synapses.
+                            </p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <span>Ajouté le 15/09/2023</span>
+                            <button class="btn open-resource" data-resource="https://via.placeholder.com/800x600.png?text=PDF+Système+Nerveux">Voir</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Ressource 2 -->
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>Schéma cellule animale</h3>
+                        </div>
+                        <div class="resource-card-body">
+                            <iframe class="resource-preview" src="https://via.placeholder.com/800x600.png?text=Schéma+Cellule" title="Schéma cellule"></iframe>
+                            <p class="resource-description">
+                                Schéma détaillé d'une cellule animale avec les différentes organites et leurs fonctions.
+                            </p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <span>Ajouté le 10/09/2023</span>
+                            <button class="btn open-resource" data-resource="https://via.placeholder.com/800x600.png?text=Schéma+Cellule+Animale">Voir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Onglet Progrès -->
+            <div id="progress-tab" class="tab-content">
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <h3>Progression générale</h3>
+                        <span>65%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 65%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <h3>Système nerveux</h3>
+                        <span>80%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 80%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <h3>Reproduction</h3>
+                        <span>50%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 50%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <h3>Environnement</h3>
+                        <span>40%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%;"></div>
+                    </div>
+                </div>
+                
+                <h3>Recommandations</h3>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-card-header">
+                            <h3>Exercice supplémentaire - Reproduction</h3>
+                        </div>
+                        <div class="resource-card-body">
+                            <p>Ces exercices vous aideront à améliorer votre compréhension de la reproduction.</p>
+                        </div>
+                        <div class="resource-card-footer">
+                            <button class="btn">Accéder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal pour afficher la ressource en plein écran -->
+    <div class="modal" id="resource-modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <iframe class="full-preview" id="full-preview" src="" title="Ressource complète"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des onglets
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+                });
+            });
+            
+            // Gestion de la modal de ressource
+            const resourceModal = document.getElementById('resource-modal');
+            const modalClose = document.querySelector('.modal-close');
+            const fullPreview = document.getElementById('full-preview');
+            const openResourceBtns = document.querySelectorAll('.open-resource');
+            
+            openResourceBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const resourceUrl = this.getAttribute('data-resource');
+                    fullPreview.src = resourceUrl;
+                    resourceModal.classList.add('active');
+                });
+            });
+            
+            modalClose.addEventListener('click', function() {
+                resourceModal.classList.remove('active');
+            });
+            
+            // Fonction pour afficher une notification
+            function showNotification(message) {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // Simulation de chargement de nouvelles ressources
+            const typeFilter = document.getElementById('type-filter');
+            const dateFilter = document.getElementById('date-filter');
+            
+            typeFilter.addEventListener('change', function() {
+                showNotification('Filtrage par type: ' + this.options[this.selectedIndex].text);
+                // Dans une application réelle, vous ajouteriez ici du code pour filtrer les ressources
+            });
+            
+            dateFilter.addEventListener('change', function() {
+                showNotification('Filtrage par date: ' + this.options[this.selectedIndex].text);
+                // Dans une application réelle, vous ajouteriez ici du code pour filtrer les ressources
+            });
+        });
+    </script>
+</body>
+</html> 

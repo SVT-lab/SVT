@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lycée - SVT avec Mme Quintas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Animations et éléments kawaii spécifiques à la page */
+        .kawaii-bubble {
+            position: absolute;
+            font-size: 1.8rem;
+            animation: float-bubble 6s infinite ease-in-out;
+            z-index: 2;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
+            opacity: 0.9;
+        }
+        
+        @keyframes float-bubble {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(15px, -15px) rotate(5deg); }
+            50% { transform: translate(0, -25px) rotate(0deg); }
+            75% { transform: translate(-15px, -15px) rotate(-5deg); }
+        }
+        
+        .bubble-1 { top: 20%; left: 10%; animation-delay: 0s; }
+        .bubble-2 { top: 15%; left: 80%; animation-delay: 1s; }
+        .bubble-3 { top: 70%; left: 15%; animation-delay: 2s; }
+        .bubble-4 { top: 65%; left: 85%; animation-delay: 3s; }
+        
+        .rainbow-text {
+            background-image: linear-gradient(45deg, #78c27a, #b6e6a7, #ffadc5, #ffd166, #a5d8ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-animation 6s ease infinite;
+        }
+        
+        @keyframes rainbow-animation {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .level-card {
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .level-card:hover {
+            transform: translateY(-15px) rotateX(10deg);
+            box-shadow: 0 15px 35px rgba(120, 194, 122, 0.3);
+        }
+        
+        .level-card:hover .card-icon {
+            animation: bounce 0.6s ease infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        
+        .card-icon {
+            transition: all 0.3s ease;
+            font-size: 3rem;
+            color: var(--primary-color);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce 1.5s ease infinite;
+            cursor: pointer;
+            z-index: 5;
+        }
+        
+        .decoration {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.2;
+            pointer-events: none;
+            font-size: 5rem;
+        }
+        
+        .decoration-1 {
+            top: 10%;
+            right: 5%;
+            animation: float-bubble 8s infinite ease-in-out;
+        }
+        
+        .decoration-2 {
+            bottom: 15%;
+            left: 5%;
+            animation: float-bubble 8s infinite ease-in-out;
+            animation-delay: 2s;
+        }
+        
+        .bac-resource-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .bac-resource-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(120, 194, 122, 0.2);
+        }
+        
+        .bac-resource-card::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2378c27a' fill-opacity='0.1' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: -1;
+            transition: all 0.5s ease;
+        }
+        
+        .bac-resource-card:hover::before {
+            transform: scale(1.1);
+            opacity: 0.7;
+        }
+
+        .theme-card {
+            background-color: white !important;
+            border: 2px solid rgba(79, 116, 227, 0.3) !important;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08) !important;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .theme-card h3 {
+            color: #222222 !important;
+            font-weight: 700 !important;
+        }
+
+        .theme-card p {
+            color: #333333 !important;
+            font-weight: 500 !important;
+            line-height: 1.6;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(79, 116, 227, 0.2) !important;
+            border-color: rgba(79, 116, 227, 0.5) !important;
+        }
+
+        .theme-card::before {
+            display: none !important;
+        }
+
+        /* Style pour les tabs */
+        .tab-btn {
+            background-color: white !important;
+            border: 2px solid rgba(79, 116, 227, 0.3) !important;
+            color: #222222 !important;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            margin: 0 5px 10px;
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(79, 116, 227, 0.1) !important;
+            transform: translateY(-3px);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        /* Style pour les sections */
+        .level-section, .theme-section, .method-section, .bac-section {
+            background-color: white !important;
+            padding: 60px 0;
+        }
+
+        .section-title {
+            color: #222222 !important;
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: none !important;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #333333 !important;
+            font-weight: 500 !important;
+        }
+
+        /* Style pour le hero */
+        .subject-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://img.freepik.com/free-photo/genetic-research-science-concept_23-2150153440.jpg') no-repeat center center/cover !important;
+        }
+
+        .subject-hero h1 {
+            color: white !important;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+        }
+    </style>
+</head>
+<body class="page-transition">
+    <!-- Header avec navigation responsive moderne -->
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <a href="index.html" class="logo fade-in">
+                    <i class="fas fa-dna"></i>
+                    <span>SVT avec Mme Quintas</span>
+                </a>
+            </div>
+            
+            <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
+                <span class="sr-only">Menu</span>
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <nav>
+                <ul id="primary-navigation" class="nav-links" data-visible="false">
+                    <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li class="dropdown active">
+                        <a href="javascript:void(0)" class="dropbtn"><i class="fas fa-graduation-cap"></i> Niveaux <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="college.html"><i class="fas fa-school"></i> Collège</a>
+                            <a href="lycee.html" class="active"><i class="fas fa-university"></i> Lycée</a>
+                        </div>
+                    </li>
+                    <li><a href="ressources.html"><i class="fas fa-book"></i> Ressources</a></li>
+                    <li><a href="#about"><i class="fas fa-info-circle"></i> À propos</a></li>
+                    <li><a href="login.html" class="btn login-btn"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="subject-hero">
+            <div class="container fade-in">
+                <h1 class="fade-in">Sciences de la Vie et de la Terre au Lycée</h1>
+                <p class="fade-in">Ressources pédagogiques pour les élèves de la 2nde à la Terminale</p>
+            </div>
+            <a href="#content" class="scroll-down-indicator">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <section id="content" class="level-section">
+            <div class="container">
+                <h2 class="section-title fade-in">Contenus par niveau</h2>
+                <p class="section-subtitle fade-in">Sélectionnez votre niveau pour accéder aux ressources pédagogiques</p>
+                
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="seconde">2nde</button>
+                        <button class="tab-btn" data-tab="premiere">1ère Enseignement commun</button>
+                        <button class="tab-btn" data-tab="premiere-spe">1ère Spécialité</button>
+                        <button class="tab-btn" data-tab="terminale">Terminale Enseignement scientifique</button>
+                        <button class="tab-btn" data-tab="terminale-spe">Terminale Spécialité</button>
+                    </div>
+                    
+                    <!-- Contenu 2nde -->
+                    <div class="tab-content active" id="seconde">
+                        <h3>Programme de 2nde</h3>
+                        <p class="fade-in">Découvrez les ressources pédagogiques pour le programme de Sciences de la Vie et de la Terre en classe de Seconde.</p>
+                        
+                        <div class="theme-cards">
+                            <!-- Thème 1 -->
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/3d-medical-background-with-dna-strands_1048-15604.jpg" alt="La Terre">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>La Terre, la vie et l'organisation du vivant</h3>
+                                    <p>Transmission, variation et expression du patrimoine génétique. Biodiversité, résultat et étape de l'évolution.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">8 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Thème 2 -->
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/close-up-plant-growing-from-soil_23-2148929798.jpg" alt="Environnement">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Les enjeux contemporains de la planète</h3>
+                                    <p>Agrosystèmes et développement durable. Impacts des activités humaines sur les écosystèmes.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">6 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Thème 3 -->
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/3d-medical-background-with-female-figure-with-muscle-map_1048-12044.jpg" alt="Corps humain">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Le corps humain et la santé</h3>
+                                    <p>Procréation et sexualité humaine. Microbiote humain et santé. Comportements, stress et système immunitaire.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">7 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenu 1ère Enseignement commun -->
+                    <div class="tab-content" id="premiere">
+                        <h3>Programme de 1ère - Enseignement scientifique</h3>
+                        <p class="fade-in">Découvrez les ressources pédagogiques pour le programme d'Enseignement scientifique en classe de Première.</p>
+                        
+                        <div class="theme-cards">
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/planet-earth-concept-green-background_23-2148521968.jpg" alt="Matière">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Une longue histoire de la matière</h3>
+                                    <p>Formation de la Terre et des éléments chimiques. Structure du système solaire. Âge de la Terre.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">5 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/high-angle-plant-test-tubes-arrangement_23-2148552122.jpg" alt="Énergie">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Le Soleil, notre source d'énergie</h3>
+                                    <p>Le rayonnement solaire. Bilan radiatif terrestre. Variation du bilan radiatif terrestre.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">6 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenu 1ère Spécialité -->
+                    <div class="tab-content" id="premiere-spe">
+                        <h3>Programme de 1ère - Spécialité SVT</h3>
+                        <p class="fade-in">Découvrez les ressources pédagogiques pour le programme de Spécialité SVT en classe de Première.</p>
+                        
+                        <div class="theme-cards">
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/biotechnology-scientist-analyzing-plant-leaf_23-2148800139.jpg" alt="Génétique">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>La Terre, la vie et l'évolution du vivant</h3>
+                                    <p>Transmission, variation et expression du patrimoine génétique. La dynamique interne de la Terre.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">9 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/close-up-scientist-studying-plant-growth_23-2149123728.jpg" alt="Écosystèmes">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Enjeux contemporains de la planète</h3>
+                                    <p>Écosystèmes et services environnementaux. Écosystèmes et activités humaines.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">7 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/3d-medical-background-with-abstract-virus-cells_1048-14045.jpg" alt="Santé">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Corps humain et santé</h3>
+                                    <p>Mutations, variations génétiques et santé. Fonctionnement du système immunitaire humain.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">8 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenu Terminale Enseignement scientifique -->
+                    <div class="tab-content" id="terminale">
+                        <h3>Programme de Terminale - Enseignement scientifique</h3>
+                        <p class="fade-in">Découvrez les ressources pédagogiques pour le programme d'Enseignement scientifique en classe de Terminale.</p>
+                        
+                        <div class="theme-cards">
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/glowing-blue-flame-useful-as-background_1232-926.jpg" alt="Climat">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Science, climat et société</h3>
+                                    <p>Le climat du futur. Choix énergétiques et impacts sur les sociétés.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">6 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/researcher-dropping-liquid-into-petri-dish_23-2148882102.jpg" alt="Biodiversité">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Le futur des énergies</h3>
+                                    <p>Deux siècles d'énergie électrique. L'énergie solaire. Choix énergétiques.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">5 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenu Terminale Spécialité -->
+                    <div class="tab-content" id="terminale-spe">
+                        <h3>Programme de Terminale - Spécialité SVT</h3>
+                        <p class="fade-in">Découvrez les ressources pédagogiques pour le programme de Spécialité SVT en classe de Terminale.</p>
+                        
+                        <div class="theme-cards">
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/green-plant-ecosystem-nature-background_53876-124645.jpg" alt="Écosystèmes">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>La Terre, la vie et l'organisation du vivant</h3>
+                                    <p>Génétique et évolution. À la recherche du passé géologique de notre planète.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">9 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/scientist-studying-plant-macro-biotechnology-science_53876-125196.jpg" alt="Climat">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Enjeux planétaires contemporains</h3>
+                                    <p>De la plante sauvage à la plante domestiquée. Les climats de la Terre : comprendre le passé pour agir aujourd'hui et demain.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">7 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-card fade-in">
+                                <div class="theme-card-image">
+                                    <img src="https://img.freepik.com/free-photo/3d-medical-background-with-brain-circuit-board-design_1048-12254.jpg" alt="Cerveau">
+                                </div>
+                                <div class="theme-card-content">
+                                    <h3>Corps humain et santé</h3>
+                                    <p>Comportements, mouvement et système nerveux. Produire le mouvement : contraction musculaire et apport d'énergie. Comportements et stress.</p>
+                                    <div class="theme-card-footer">
+                                        <span class="resource-count">8 ressources</span>
+                                        <a href="login.html" class="btn-outline">Accéder</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resources" class="resources-section">
+            <div class="container">
+                <h2 class="section-title">Types de ressources disponibles</h2>
+                <p class="section-subtitle fade-in">Des supports pédagogiques variés pour faciliter l'apprentissage</p>
+                
+                <div class="feature-cards">
+                    <div class="feature-card fade-in">
+                        <i class="fas fa-book"></i>
+                        <h3>Fiches de cours</h3>
+                        <p>Des contenus structurés et organisés selon le programme officiel</p>
+                    </div>
+                    
+                    <div class="feature-card fade-in">
+                        <i class="fas fa-laptop-code"></i>
+                        <h3>Activités interactives</h3>
+                        <p>Des exercices en ligne pour tester vos connaissances</p>
+                    </div>
+                    
+                    <div class="feature-card fade-in">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Évaluations</h3>
+                        <p>Des tests en conditions d'examen pour vous préparer</p>
+                    </div>
+                    
+                    <div class="feature-card fade-in">
+                        <i class="fas fa-images"></i>
+                        <h3>Média éducatifs</h3>
+                        <p>Vidéos, infographies et animations pédagogiques</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bac" class="bac-section">
+            <div class="container">
+                <h2 class="section-title">Préparation au Baccalauréat</h2>
+                <p class="section-subtitle fade-in">Des ressources spécifiques pour réussir les épreuves du Bac</p>
+                
+                <div class="bac-resources">
+                    <div class="bac-resource-card fade-in">
+                        <i class="fas fa-pencil-alt"></i>
+                        <h3>Méthodologie des épreuves</h3>
+                        <p>Apprenez à structurer vos réponses selon les exigences du Baccalauréat</p>
+                        <a href="login.html" class="btn-outline">Accéder</a>
+                    </div>
+                    
+                    <div class="bac-resource-card fade-in">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>Sujets corrigés</h3>
+                        <p>Entraînez-vous avec des sujets des années précédentes</p>
+                        <a href="login.html" class="btn-outline">Accéder</a>
+                    </div>
+                    
+                    <div class="bac-resource-card fade-in">
+                        <i class="fas fa-brain"></i>
+                        <h3>Révisions ciblées</h3>
+                        <p>Concentrez-vous sur les thématiques fréquemment évaluées</p>
+                        <a href="login.html" class="btn-outline">Accéder</a>
+                    </div>
+                    
+                    <div class="bac-resource-card fade-in">
+                        <i class="fas fa-comments"></i>
+                        <h3>Coaching personnalisé</h3>
+                        <p>Bénéficiez de conseils adaptés à votre profil d'apprentissage</p>
+                        <a href="login.html" class="btn-outline">Accéder</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SVT avec Mme Quintas</h3>
+                    <p>Ressources pédagogiques pour l'enseignement des Sciences de la Vie et de la Terre, conformes aux programmes officiels de l'Éducation nationale.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Liens utiles</h3>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="college.html">Collège</a></li>
+                        <li><a href="lycee.html">Lycée</a></li>
+                        <li><a href="ressources.html">Ressources</a></li>
+                        <li><a href="login.html">Connexion</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> contact@svt-quintas.fr</p>
+                    <p><i class="fas fa-phone"></i> +33 1 23 45 67 89</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 SVT avec Mme Quintas - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script pour la navigation responsive -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables pour la navigation mobile
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            const nav = document.querySelector('nav');
+            const primaryNavigation = document.getElementById('primary-navigation');
+            
+            // Gestion du menu mobile
+            if (mobileNavToggle) {
+                mobileNavToggle.addEventListener('click', () => {
+                    const visibility = primaryNavigation.getAttribute('data-visible');
+                    
+                    if (visibility === 'false') {
+                        primaryNavigation.setAttribute('data-visible', 'true');
+                        mobileNavToggle.setAttribute('aria-expanded', 'true');
+                        document.body.style.overflow = 'hidden'; // Empêche le défilement quand le menu est ouvert
+                    } else {
+                        primaryNavigation.setAttribute('data-visible', 'false');
+                        mobileNavToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = ''; // Restaure le défilement
+                    }
+                });
+            }
+            
+            // Fermer le menu quand on clique sur un lien
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (primaryNavigation.getAttribute('data-visible') === 'true') {
+                        primaryNavigation.setAttribute('data-visible', 'false');
+                        mobileNavToggle.setAttribute('aria-expanded', 'false');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // Gestion des onglets
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Retirer la classe 'active' de tous les boutons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    // Ajouter la classe 'active' au bouton cliqué
+                    button.classList.add('active');
+                    
+                    // Cacher tous les contenus
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    // Afficher le contenu correspondant au bouton cliqué
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Animation au défilement pour les éléments
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.theme-card, .feature-card, .bac-resource-card, .fade-in');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementPosition < windowHeight - 100) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Exécuter l'animation au chargement et au défilement
+            window.addEventListener('scroll', animateOnScroll);
+            window.addEventListener('load', animateOnScroll);
+        });
+    </script>
+</body>
+</html> 
